@@ -15,7 +15,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.liucj.libnavannotation.FragmentDestination;
 import com.liucj.ppjoke.R;
 import com.liucj.ppjoke.databinding.FragmentNotificationsBinding;
-@FragmentDestination(pageUrl = "main/tabs/not", asStarter = false)
+@FragmentDestination(pageUrl = "main/tabs/publish", asStarter = false)
 public class NotificationsFragment extends Fragment {
 
     private NotificationsViewModel notificationsViewModel;

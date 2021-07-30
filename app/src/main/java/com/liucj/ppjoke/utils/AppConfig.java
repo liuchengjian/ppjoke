@@ -27,7 +27,7 @@ public class AppConfig {
         return sDestConfig;
     }
 
-    public static BottomBar getBottomBar() {
+    public static BottomBar getBottomBarConfig() {
         if (sBottomBar == null) {
             String content = parseFile("main_tabs_config.json");
             sBottomBar = JSON.parseObject(content, BottomBar.class);
