@@ -5,6 +5,7 @@ import android.util.JsonReader;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
+import com.liucj.libcommon.AppGlobals;
 import com.liucj.ppjoke.model.BottomBar;
 import com.liucj.ppjoke.model.Destination;
 

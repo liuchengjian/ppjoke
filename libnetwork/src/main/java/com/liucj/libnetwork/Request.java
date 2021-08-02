@@ -1,10 +1,18 @@
 package com.liucj.libnetwork;
 
+import android.annotation.SuppressLint;
+import android.text.TextUtils;
+import android.util.Log;
+
 import androidx.annotation.IntDef;
+import androidx.arch.core.executor.ArchTaskExecutor;
+
+import com.liucj.libnetwork.cache.CacheManager;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -15,7 +23,7 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-public abstract class Request<T, R extends Request> {
+public abstract class Request<T, R extends Request> implements Cloneable {
     protected String mUrl;
     protected HashMap<String, String> headers = new HashMap<>();
     protected HashMap<String, Object> params = new HashMap<>();
@@ -24,6 +32,9 @@ public abstract class Request<T, R extends Request> {
     public static final int NET_ONLY = 3;//只访问网络
     public static final int NET_CACHE = 4;//先访问网络，成功后缓存到本地
     private String cacheKey;
+    private Type mType;
+    private Class mClazz;
+    private int mCacheStrategy;
 
     @IntDef({CACHE_ONLY, CACHE_FIRST, NET_ONLY, NET_CACHE})
     public @interface CacheStrategy {
@@ -63,26 +74,81 @@ public abstract class Request<T, R extends Request> {
         return (R) this;
     }
 
+    /**
+     * 异步请求返回
+     *
+     * @param callback
+     */
+    @SuppressLint("RestrictedApi")
     public void execute(JsonCallBack<T> callback) {
-        getCall().enqueue(new Callback() {
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                ApiResponse<T> apiResponse = new ApiResponse<>();
-                apiResponse.message = e.getMessage();
-                callback.onError(apiResponse);
-            }
-
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                ApiResponse<T> apiResponse = parseResponse(response, callback);
-                if (apiResponse.success) {
-                    callback.onSuccess(apiResponse);
-                } else {
+        if (mCacheStrategy != NET_ONLY) {
+            ArchTaskExecutor.getIOThreadExecutor().execute(new Runnable() {
+                @Override
+                public void run() {
+                    ApiResponse<T> response = readCache();
+                    if (callback != null) callback.onCacheSuccess(response);
+                }
+            });
+        }
+        if (mCacheStrategy != CACHE_ONLY) {
+            getCall().enqueue(new Callback() {
+                @Override
+                public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                    ApiResponse<T> apiResponse = new ApiResponse<>();
+                    apiResponse.message = e.getMessage();
                     callback.onError(apiResponse);
                 }
-            }
 
-        });
+                @Override
+                public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                    ApiResponse<T> apiResponse = parseResponse(response, callback);
+                    if (apiResponse.success) {
+                        callback.onSuccess(apiResponse);
+                    } else {
+                        callback.onError(apiResponse);
+                    }
+                }
+            });
+        }
+    }
+
+    /**
+     * 同步请求返回
+     *
+     * @return
+     */
+    public ApiResponse<T> execute() {
+        if (mCacheStrategy == CACHE_ONLY) {
+            return readCache();
+        }
+        ApiResponse<T> result = null;
+        try {
+            Response response = getCall().execute();
+            result = parseResponse(response, null);
+            return result;
+        } catch (IOException e) {
+            e.printStackTrace();
+            if (result == null) {
+                result = new ApiResponse<>();
+                result.message = e.getMessage();
+            }
+        }
+        return result;
+    }
+
+    /**
+     * 读取缓存，并设置返回参数
+     * @return
+     */
+    private ApiResponse<T> readCache() {
+        String key = TextUtils.isEmpty(cacheKey) ? generateCacheKey() : cacheKey;
+        Object cache = CacheManager.getCache(key);
+        ApiResponse<T> result = new ApiResponse<>();
+        result.status = 304;
+        result.message = "缓存获取成功";
+        result.body = (T) cache;
+        result.success = true;
+        return result;
     }
 
     private ApiResponse<T> parseResponse(Response response, JsonCallBack<T> callBack) {
@@ -98,6 +164,12 @@ public abstract class Request<T, R extends Request> {
                     ParameterizedType type = (ParameterizedType) callBack.getClass().getGenericSuperclass();
                     Type argument = type.getActualTypeArguments()[0];
                     result.body = (T) convert.convert(content, argument);
+                } else if (mType != null) {
+                    result.body = (T) convert.convert(content, mType);
+                } else if (mClazz != null) {
+                    result.body = (T) convert.convert(content, mClazz);
+                } else {
+                    Log.e("Request", "parseResponse:无法解析");
                 }
             } else {
                 message = content;
@@ -110,11 +182,47 @@ public abstract class Request<T, R extends Request> {
         result.success = success;
         result.status = status;
         result.message = message;
+
+        if (mCacheStrategy != NET_ONLY && result.success && result.body != null && result.body instanceof Serializable) {
+            saveCache(result.body);
+        }
         return result;
     }
 
-    public void execute() {
+    /**
+     * 保存到room数据库
+     *
+     * @param body
+     */
+    private void saveCache(T body) {
+        String key = TextUtils.isEmpty(cacheKey) ? generateCacheKey() : cacheKey;
+        CacheManager.save(key, body);
+    }
 
+    /**
+     * 自定义 cacheKey 主键
+     *
+     * @return
+     */
+    private String generateCacheKey() {
+        cacheKey = UrlCreator.createUrlFromParams(mUrl, params);
+        return cacheKey;
+    }
+
+
+    public R cacheStrategy(@CacheStrategy int acheStrategy) {
+        mCacheStrategy = acheStrategy;
+        return (R) this;
+    }
+
+    public R responseType(Type type) {
+        mType = type;
+        return (R) this;
+    }
+
+    public R responseType(Class clazz) {
+        mClazz = clazz;
+        return (R) this;
     }
 
     private Call getCall() {

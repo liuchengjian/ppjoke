@@ -14,6 +14,12 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
+        //CacheDatabase里 exportSchema = true 时需设置下面代码
+        javaCompileOptions{
+            annotationProcessorOptions{
+                arguments=["room.schemaLocation":"$projectDir/schemas".toString()]
+            }
+        }
     }
 
     buildTypes {
@@ -38,7 +44,7 @@ dependencies {
 
     implementation 'com.squareup.okhttp3:okhttp:4.2.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.5.0'
-    implementation project(":libcommon")
+    compileOnly project(":libcommon") //只参与编译，不参与打包
 
     api 'android.arch.persistence.room:runtime:1.1.1'
     api "android.arch.lifecycle:extensions:1.1.1"

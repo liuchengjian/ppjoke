@@ -15,15 +15,17 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import com.liucj.ppjoke.databinding.ActivityMainBinding;
+import com.liucj.libnetwork.ApiResponse;
+import com.liucj.libnetwork.GetRequest;
+import com.liucj.libnetwork.JsonCallBack;
 import com.liucj.ppjoke.ui.view.FixFragmentNavigator;
 import com.liucj.ppjoke.utils.NavGraphBuilder;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ActivityMainBinding binding;
     private NavController navController;
 
     @Override
@@ -40,6 +42,14 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
                 navController.navigate(item.getItemId());
                 return !TextUtils.isEmpty(item.getTitle());
+            }
+        });
+        GetRequest<JSONArray> request = new GetRequest<JSONArray>("www.mooc.com");
+        request.execute();
+        request.execute(new JsonCallBack<JSONArray>() {
+            @Override
+            public void onSuccess(ApiResponse<JSONArray> response) {
+                super.onSuccess(response);
             }
         });
     }
