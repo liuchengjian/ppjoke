@@ -1,16 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.button.MaterialButton xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:textColor="@color/color_2f2"
-    app:backgroundTint="@color/color_gray"
-    app:icon="@drawable/ic_launcher_background"
-    app:iconGravity="textStart"
-    app:cornerRadius="@dimen/dp_25"
-    android:text="@string/app_name"
-    app:iconPadding="@dimen/dp_4"
-    app:iconSize="@dimen/sp_12"
-    app:iconTint="@color/color_theme">
+    xmlns:tools="http://schemas.android.com/tools">
 
-</com.google.android.material.button.MaterialButton>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/activityText"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_marginLeft="@dimen/dp_16"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="center_vertical"
+        android:includeFontPadding="false"
+        android:orientation="vertical"
+        android:paddingTop="0dp"
+        android:paddingBottom="0dp"
+        android:stateListAnimator="@null"
+        android:textColor="@color/color_2f2"
+        android:textSize="@dimen/sp_10"
+        android:visibility="visible"
+        app:backgroundTint="@color/color_gray"
+        app:cornerRadius="10dp"
+        app:icon="@drawable/icon_tag"
+        app:iconGravity="textStart"
+        app:iconPadding="@dimen/dp_4"
+        app:iconSize="@dimen/dp_12"
+        app:iconTintMode="multiply"
+        tools:text="神秘的jetpack">
+
+    </com.google.android.material.button.MaterialButton>
+</layout>

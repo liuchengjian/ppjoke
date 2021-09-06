@@ -1,6 +1,7 @@
 package com.liucj.ppjoke.model;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * 评论
@@ -43,4 +44,19 @@ public class Comment implements Serializable {
     public User author;
     public Ugc ugc;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Comment comment = (Comment) o;
+        return likeCount == comment.likeCount &&
+                hasLiked == comment.hasLiked &&
+                Objects.equals(author, comment.author) &&
+                Objects.equals(ugc, comment.ugc);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(likeCount, hasLiked, author, ugc);
+    }
 }

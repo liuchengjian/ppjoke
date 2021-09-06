@@ -1,12 +1,16 @@
 package com.liucj.ppjoke.model;
 
+import com.chad.library.adapter.base.entity.MultiItemEntity;
+
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * 帖子
  */
-public class Feed implements Serializable {
-
+public class Feed implements Serializable, MultiItemEntity {
+    public static final int TYPE_IMAGE_TEXT = 1;//图文
+    public static final int TYPE_VIDEO = 2;//视频
     /**
      * id : 428
      * itemId : 1578976510452
@@ -43,5 +47,36 @@ public class Feed implements Serializable {
     public Comment topComment;
     public Ugc ugc;
 
-  
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Feed feed = (Feed) o;
+        return id == feed.id &&
+                itemId == feed.itemId &&
+                itemType == feed.itemType &&
+                createTime == feed.createTime &&
+                duration == feed.duration &&
+                authorId == feed.authorId &&
+                width == feed.width &&
+                height == feed.height &&
+                Objects.equals(feeds_text, feed.feeds_text) &&
+                Objects.equals(activityIcon, feed.activityIcon) &&
+                Objects.equals(activityText, feed.activityText) &&
+                Objects.equals(url, feed.url) &&
+                Objects.equals(cover, feed.cover) &&
+                Objects.equals(author, feed.author) &&
+                Objects.equals(topComment, feed.topComment) &&
+                Objects.equals(ugc, feed.ugc);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, itemId, itemType, createTime, duration, feeds_text, authorId, activityIcon, activityText, width, height, url, cover, author, topComment, ugc);
+    }
+
+    @Override
+    public int getItemType() {
+        return itemType;
+    }
 }

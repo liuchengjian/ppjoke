@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <com.liucj.libcommon.view.CornerFrameLayout
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_16"
+        android:layout_marginRight="@dimen/dp_16"
+        android:background="@color/color_gray"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/dp_10"
+        android:paddingRight="@dimen/dp_10"
+        android:paddingBottom="@dimen/dp_10"
+        android:visibility="visible"
+        app:clip_radius="6dp"
+        app:clip_side="all">
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_60"
+            android:layout_gravity="right|top"
+            android:layout_marginRight="@dimen/dp_10"
+            android:src="@drawable/icon_god_comment2"></ImageView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_20"
+                android:layout_marginTop="@dimen/dp_10"
+                android:orientation="horizontal">
+
+
+                <com.liucj.ppjoke.ui.view.PPImageView
+                    android:id="@+id/avatar"
+                    android:layout_width="@dimen/dp_20"
+                    android:layout_height="@dimen/dp_20"
+                    tools:src="@mipmap/ic_launcher_round">
+
+                </com.liucj.ppjoke.ui.view.PPImageView>
+
+                <TextView
+                    android:id="@+id/user_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dp_20"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/color_3d3"
+                    android:textSize="@dimen/sp_12"
+                    tools:text="神秘的jetpack"></TextView>
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="1px"
+                    android:layout_weight="1"></Space>
+
+                <TextView
+                    android:id="@+id/likeCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:textSize="@dimen/sp_12"
+                    tools:text="1000"></TextView>
+
+                <ImageView
+                    android:id="@+id/likeCountImg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_2"
+                    tools:src="@drawable/icon_cell_liked">
+
+                </ImageView>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/commentText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_10"
+                android:layout_marginRight="@dimen/dp_36"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textColor="@color/color_3d3"
+                android:textSize="@dimen/sp_14"
+                android:visibility="visible"
+                tools:text="神秘的JetPack神秘的JetPack神秘的JetPack"></TextView>
+
+            <FrameLayout
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="@dimen/dp_10"
+                android:visibility="visible">
+
+                <com.liucj.ppjoke.ui.view.PPImageView
+                    android:id="@+id/commentImg"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:background="@color/color_theme_10"
+                    tools:src="@mipmap/ic_launcher"></com.liucj.ppjoke.ui.view.PPImageView>
+
+                <ImageView
+                    android:id="@+id/icon_video_play"
+                    android:layout_width="@dimen/dp_20"
+                    android:layout_height="@dimen/dp_20"
+                    android:layout_gravity="center"
+                    android:src="@drawable/icon_video_play"
+                    android:visibility="visible"></ImageView>
+            </FrameLayout>
+
+        </LinearLayout>
+    </com.liucj.libcommon.view.CornerFrameLayout>
+</layout>

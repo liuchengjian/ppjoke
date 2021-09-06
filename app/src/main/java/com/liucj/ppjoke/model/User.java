@@ -1,6 +1,7 @@
 package com.liucj.ppjoke.model;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class User implements Serializable {
 
@@ -42,4 +43,30 @@ public class User implements Serializable {
     public int feedCount;
     public boolean hasFollow;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return likeCount == user.likeCount &&
+                topCommentCount == user.topCommentCount &&
+                followCount == user.followCount &&
+                followerCount == user.followerCount &&
+                expires_time == user.expires_time &&
+                score == user.score &&
+                historyCount == user.historyCount &&
+                commentCount == user.commentCount &&
+                favoriteCount == user.favoriteCount &&
+                feedCount == user.feedCount &&
+                hasFollow == user.hasFollow &&
+                Objects.equals(name, user.name) &&
+                Objects.equals(avatar, user.avatar) &&
+                Objects.equals(description, user.description) &&
+                Objects.equals(qqOpenId, user.qqOpenId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, avatar, description, likeCount, topCommentCount, followCount, followerCount, qqOpenId, expires_time, score, historyCount, commentCount, favoriteCount, feedCount, hasFollow);
+    }
 }

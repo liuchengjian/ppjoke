@@ -13,7 +13,7 @@
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.liucj.ppjoke.ui.dashboard.DashboardFragment"
+        android:name="com.liucj.ppjoke.ui.sofa.SofaFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_dashboard" />
 

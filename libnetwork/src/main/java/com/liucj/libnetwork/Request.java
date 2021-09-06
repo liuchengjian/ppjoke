@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.annotation.IntDef;
+import androidx.annotation.NonNull;
 import androidx.arch.core.executor.ArchTaskExecutor;
 
 import com.liucj.libnetwork.cache.CacheManager;
@@ -52,14 +53,20 @@ public abstract class Request<T, R extends Request> implements Cloneable {
     }
 
     public R addParam(String key, Object value) {
+        if (value == null) {
+            return (R) this;
+        }
         //value只能是8种基本类型
         //判断是否是8种基本类型,通过反射得到
-        Field field = null;
         try {
-            field = value.getClass().getField("TYPE");
-            Class clazz = (Class) field.get(null);
-            if (clazz.isPrimitive()) {
+            if (value.getClass() == String.class) {
                 params.put(key, value);
+            } else {
+                Field field = value.getClass().getField("TYPE");
+                Class claz = (Class) field.get(null);
+                if (claz.isPrimitive()) {
+                    params.put(key, value);
+                }
             }
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
@@ -138,6 +145,7 @@ public abstract class Request<T, R extends Request> implements Cloneable {
 
     /**
      * 读取缓存，并设置返回参数
+     *
      * @return
      */
     private ApiResponse<T> readCache() {
@@ -161,13 +169,20 @@ public abstract class Request<T, R extends Request> implements Cloneable {
             String content = response.body().string();
             if (success) {
                 if (callBack != null) {
-                    ParameterizedType type = (ParameterizedType) callBack.getClass().getGenericSuperclass();
-                    Type argument = type.getActualTypeArguments()[0];
-                    result.body = (T) convert.convert(content, argument);
-                } else if (mType != null) {
-                    result.body = (T) convert.convert(content, mType);
-                } else if (mClazz != null) {
-                    result.body = (T) convert.convert(content, mClazz);
+                    if(mType != null) {
+                        result.body = (T) convert.convert(content, mType);
+                    } else if (mClazz != null) {
+                        result.body = (T) convert.convert(content, mClazz);
+                    }else {
+                        try {
+                            ParameterizedType type = (ParameterizedType) callBack.getClass().getGenericSuperclass();
+                            Type argument = type.getActualTypeArguments()[0];
+                            result.body = (T) convert.convert(content, argument);
+                        }catch (Exception e){
+                            e.printStackTrace();
+                            Log.e("Request", "parseResponse:无法解析");
+                        }
+                    }
                 } else {
                     Log.e("Request", "parseResponse:无法解析");
                 }
@@ -239,6 +254,12 @@ public abstract class Request<T, R extends Request> implements Cloneable {
         for (Map.Entry<String, String> entry : headers.entrySet()) {
             builder.addHeader(entry.getKey(), entry.getValue());
         }
+    }
+
+    @NonNull
+    @Override
+    public Request clone() throws CloneNotSupportedException {
+        return (Request<T, R>) super.clone();
     }
 
 
