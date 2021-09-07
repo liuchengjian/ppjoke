@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.liucj.libcommon.utils.StatusBar;
 import com.liucj.libnetwork.ApiResponse;
 import com.liucj.libnetwork.GetRequest;
 import com.liucj.libnetwork.JsonCallBack;
@@ -26,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme);
+        StatusBar.fitSystemBar(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         BottomNavigationView navView = findViewById(R.id.nav_view);

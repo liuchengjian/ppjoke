@@ -1,5 +1,7 @@
 package com.liucj.ppjoke.model;
 
+import com.chad.library.adapter.base.entity.MultiItemEntity;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -59,4 +61,6 @@ public class Comment implements Serializable {
     public int hashCode() {
         return Objects.hash(likeCount, hasLiked, author, ugc);
     }
+
+
 }

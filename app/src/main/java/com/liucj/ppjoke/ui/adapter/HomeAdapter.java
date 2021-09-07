@@ -14,6 +14,7 @@ import com.liucj.libcommon.view.CornerFrameLayout;
 import com.liucj.ppjoke.R;
 import com.liucj.ppjoke.model.Feed;
 import com.liucj.ppjoke.ui.activity.CaptureActivity;
+import com.liucj.ppjoke.ui.activity.FeedDetailActivity;
 import com.liucj.ppjoke.ui.view.ListPlayerView;
 import com.liucj.ppjoke.ui.view.PPImageView;
 import com.liucj.ppjoke.utils.StringConvert;
@@ -43,10 +44,10 @@ public class HomeAdapter extends BaseMultiItemQuickAdapter<Feed, BaseViewHolder>
         //帖子文本
         feeds_text.setText(feed.feeds_text);
         feeds_text.setVisibility(TextUtils.isEmpty(feed.feeds_text) ? View.GONE : View.VISIBLE);
+        CornerFrameLayout layout = helper.getView(R.id.layout);
+        layout.setVisibility(feed.topComment == null ? View.GONE : View.VISIBLE);
         if (feed.topComment != null) {
             //图片文本特有
-            CornerFrameLayout layout = helper.getView(R.id.layout);
-            layout.setVisibility(feed.topComment == null ? View.GONE : View.VISIBLE);
             TextView commentText = helper.getView(R.id.commentText);
             commentText.setText(TextUtils.isEmpty(feed.topComment.commentText)
                     ? "" : feed.topComment.commentText);

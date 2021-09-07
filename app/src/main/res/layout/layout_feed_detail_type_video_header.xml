@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <include layout="@layout/layout_feed_text"
+           />
+
+        <include
+            layout="@layout/layout_feed_tag"
+           />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_10"
+            android:background="@color/color_gray2"/>
+    </LinearLayout>
+</layout>

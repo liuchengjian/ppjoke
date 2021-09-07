@@ -118,7 +118,12 @@ public class PublishActivity extends AppCompatActivity implements View.OnClickLi
                 break;
         }
     }
+
     private void publish() {
+        if (TextUtils.isEmpty(inputView.getText().toString().trim())) {
+            showToast("请先输入话题内容");
+            return;
+        }
         showLoading();
         List<OneTimeWorkRequest> workRequests = new ArrayList<>();
         if (!TextUtils.isEmpty(filePath)) {
@@ -153,6 +158,7 @@ public class PublishActivity extends AppCompatActivity implements View.OnClickLi
 
     /**
      * 多任务栈在一个地方出了
+     *
      * @param workRequests
      */
     private void enqueue(List<OneTimeWorkRequest> workRequests) {
@@ -278,6 +284,7 @@ public class PublishActivity extends AppCompatActivity implements View.OnClickLi
                     }
                 });
     }
+
     private LoadingDialog mLoadingDialog = null;
 
     private void showLoading() {
