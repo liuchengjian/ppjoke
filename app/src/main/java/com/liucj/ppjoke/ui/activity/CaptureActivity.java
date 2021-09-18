@@ -211,23 +211,22 @@ public class CaptureActivity extends AppCompatActivity implements RecordView.onR
         newUseList.add(preview);
         newUseList.add(imageCapture);
         newUseList.add(videoCapture);
-        //下面我们要查询一下 当前设备它所支持的分辨率有哪些，然后再更新一下 所配置的几个usecase
-        Map<UseCase, Size> resolutions = CameraX.getSurfaceManager().
-                getSuggestedResolutions(cameraIdForLensFacing, null, newUseList);
-        Iterator<Map.Entry<UseCase, Size>> iterator = resolutions.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry<UseCase, Size> next = iterator.next();
-            UseCase useCase = next.getKey();
-            Size value = next.getValue();
-            Map<String, Size> update = new HashMap<>();
-            update.put(cameraIdForLensFacing, value);
-            useCase.updateSuggestedResolution(update);
-        }
         try {
+            //下面我们要查询一下 当前设备它所支持的分辨率有哪些，然后再更新一下 所配置的几个usecase
+            Map<UseCase, Size> resolutions = CameraX.getSurfaceManager().
+                    getSuggestedResolutions(cameraIdForLensFacing, null, newUseList);
+            Iterator<Map.Entry<UseCase, Size>> iterator = resolutions.entrySet().iterator();
+            while (iterator.hasNext()) {
+                Map.Entry<UseCase, Size> next = iterator.next();
+                UseCase useCase = next.getKey();
+                Size value = next.getValue();
+                Map<String, Size> update = new HashMap<>();
+                update.put(cameraIdForLensFacing, value);
+                useCase.updateSuggestedResolution(update);
+            }
             CameraX.bindToLifecycle(this, preview, imageCapture, videoCapture);
         } catch (Exception e) {
             e.printStackTrace();
-            showErrorToast("调用摄像头失败！");
         }
 
     }

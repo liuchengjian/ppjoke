@@ -17,6 +17,7 @@ import com.liucj.libcommon.utils.TimeUtils;
 import com.liucj.ppjoke.R;
 import com.liucj.ppjoke.model.Comment;
 import com.liucj.ppjoke.model.Feed;
+import com.liucj.ppjoke.ui.activity.CommentDialog;
 import com.liucj.ppjoke.ui.view.PPImageView;
 
 import org.jetbrains.annotations.NotNull;
@@ -24,20 +25,19 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class FeedDetailAdapter extends BaseQuickAdapter<Comment, BaseViewHolder> {
-
     public FeedDetailAdapter(int layoutResId, List<Comment> list) {
         super(layoutResId, list);
     }
 
-
     @Override
     protected void convert(@NotNull BaseViewHolder helper, Comment comment) {
         PPImageView avatar = helper.getView(R.id.author_avatar);
-        avatar.setImageUrl(comment.author.avatar, true);
-        //昵称
-        helper.setText(R.id.author_name, comment.author.name);
+        if(comment.author!=null){
+            avatar.setImageUrl(comment.author.avatar, true);
+            //昵称
+            helper.setText(R.id.author_name, comment.author.name);
+        }
         helper.setText(R.id.create_time, TimeUtils.calculate(comment.createTime));
-
         TextView commentLike = helper.getView(R.id.comment_like);
         if (comment.ugc != null) {
             commentLike.setText(String.valueOf(comment.ugc.likeCount));
@@ -63,8 +63,7 @@ public class FeedDetailAdapter extends BaseQuickAdapter<Comment, BaseViewHolder>
         MaterialButton labelAuthor = helper.getView(R.id.label_author);
         ImageView videoIcon = helper.getView(R.id.video_icon);
 //        boolean self = comment.author == null ? false : UserManager.get().getUserId() == comment.author.userId;
-
-        boolean self = false;
+        boolean self = true;
         labelAuthor.setVisibility(self ? View.VISIBLE : View.GONE);
         commentDelete.setVisibility(self ? View.VISIBLE : View.GONE);
         if (!TextUtils.isEmpty(comment.imageUrl)) {

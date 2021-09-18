@@ -27,7 +27,7 @@ public class FileUploadManager {
     private static final String BUCKET_NAME = "pipijoke";
     private static final String END_POINT = "http://oss-cn-hangzhou.aliyuncs.com";
 //    private static final String AUTH_SERVER_URL = "http://123.56.232.18:7080/";
-    private static final String AUTH_SERVER_URL = "http://192.168.1.109:7080/";
+    private static final String AUTH_SERVER_URL = "http://123.56.232.18:7080/";
 
     static {
 

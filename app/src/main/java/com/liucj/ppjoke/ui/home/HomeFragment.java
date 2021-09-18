@@ -98,7 +98,7 @@ public class HomeFragment extends BaseListFragment<Feed, BaseViewHolder> {
         Request request = null;
         request = ApiService.get("/feeds/queryHotFeedsList")
                 .addParam("feedType", feedType)
-                .addParam("userId", "1630657969")
+                .addParam("userId", "1631678065")
                 .addParam("feedId", "")
                 .addParam("pageCount", 10)
                 .responseType(new TypeReference<ArrayList<Feed>>() {

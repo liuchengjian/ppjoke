@@ -67,7 +67,7 @@ public class TagBottomSheetDialogFragment extends BottomSheetDialogFragment {
 
     private void queryTagList() {
         ApiService.get("/tag/queryTagList")
-                .addParam("userId","1630657969")
+                .addParam("userId","1631678065")
                 .addParam("pageCount", 100)
                 .addParam("tagId", 0).execute(new JsonCallBack<List<TagList>>() {
             @SuppressLint("RestrictedApi")

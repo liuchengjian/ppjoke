@@ -37,7 +37,7 @@ import java.util.Map;
 @FragmentDestination(pageUrl = "main/tabs/sofa", asStarter = false)
 public class SofaFragment extends Fragment {
     private TabLayout tabLayout;
-    private ViewPager2 viewPager;
+    public ViewPager2 viewPager;
     private View rootView;
     private List<SofaTab.Tabs> tabs;
     private SofaTab tabConfig;
@@ -127,11 +127,11 @@ public class SofaFragment extends Fragment {
         return tabView;
     }
 
-    private Fragment getTabFragment(int position) {
+    public Fragment getTabFragment(int position) {
         return HomeFragment.newInstance(tabs.get(position).tag);
     }
 
-    private SofaTab getTabConfig() {
+    public SofaTab getTabConfig() {
         return AppConfig.getSofaTabConfig();
     }
 

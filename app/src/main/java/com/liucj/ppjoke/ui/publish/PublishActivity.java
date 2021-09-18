@@ -264,7 +264,7 @@ public class PublishActivity extends AppCompatActivity implements View.OnClickLi
                 .addParam("fileUrl", fileUploadUrl)
                 .addParam("fileWidth", width)
                 .addParam("fileHeight", height)
-                .addParam("userId", "1630657969")
+                .addParam("userId", "1631678065")
                 .addParam("tagId", mTagList == null ? 0 : mTagList.tagId)
                 .addParam("tagTitle", mTagList == null ? "" : mTagList.title)
                 .addParam("feedText", inputView.getText().toString())
